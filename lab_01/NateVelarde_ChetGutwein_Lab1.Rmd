@@ -1,0 +1,71 @@
+---
+title: "NateVelarde_ChetGutwein_Lab1"
+author: "Nate Velarde & Chet Gutwein"
+date: "May 30, 2017"
+output: pdf_document
+---
+```{r}
+rm(list = ls())
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(knitr)
+opts_chunk$set(tidy.opts=list(width.cutoff=60),tidy=TRUE)
+```
+
+## Introduction
+
+\begin{center}
+Is CEO salary related to company performance?
+\end{center}
+
+This section is reserved for Intro...
+```{r}
+getwd()
+```
+loading CEO object from workspace file...
+
+```{r}
+load("ceo_w203.RData")
+objects()
+```
+loading standard EDA libraries...
+
+```{r}
+library(car)
+library(dplyr)
+library(Hmisc)
+library(ggplot2)
+str(CEO)
+```
+
+
+```{r}
+summary(CEO)
+head(CEO)
+```
+## Univariate Analysis
+
+We will take a look at each variable 
+```{r}
+describe(CEO$salary)
+hist(CEO$salary, breaks = c(-500, 500, 1500, 2500, 3500, 4500, 5500), main = "CEO Salary, 1990", 
+     xlab = "Salary in $1,000")
+boxplot(CEO$salary)
+```
+
+
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
