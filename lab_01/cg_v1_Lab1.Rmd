@@ -1,0 +1,143 @@
+---
+title: "NateVelarde_ChetGutwein_Lab1"
+author: "Nate Velarde & Chet Gutwein"
+date: "May 30, 2017"
+output: pdf_document
+---
+```{r}
+rm(list = ls())
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(knitr)
+opts_chunk$set(tidy.opts=list(width.cutoff=60),tidy=TRUE)
+```
+
+## Introduction
+
+\begin{center}
+Is CEO salary related to company performance?
+\end{center}
+
+We will attempt to answer this question utilizing a dataset of CEO salaries from 1990. We will use exploratory data analysis techniques to look at each variable by itself and also in relation to other variables such as company performance.
+```{r}
+getwd()
+```
+loading CEO object from workspace file...
+
+```{r}
+load("ceo_w203.RData")
+objects()
+```
+loading standard EDA libraries...
+
+```{r}
+library(car)
+library(dplyr)
+library(Hmisc)
+library(ggplot2)
+str(CEO)
+```
+
+
+```{r}
+summary(CEO)
+head(CEO)
+```
+## Univariate Analysis
+
+We will take a look at each variable 
+```{r}
+describe(CEO$salary)
+hist(CEO$salary, breaks = c(-500, 500, 1500, 2500, 3500, 4500, 5500), main = "CEO Salary, 1990", 
+     xlab = "Salary in $1,000")
+boxplot(CEO$salary)
+```
+We want to see how salary compares for CEO's across different education levels. We will sort this into three groups: 
+\begin{itemize}
+\item Not college educated
+\item College educated but no graduate school
+\item College educated and graduate school
+\end{itemize}
+```{r}
+no_college <- CEO$college == 0
+college <- CEO$college == 1 & CEO$grad == 0
+graduate <- CEO$grad == 1
+```
+
+```{r}
+CEO_nc <- CEO[no_college, ]
+CEO_c <- CEO[college, ]
+CEO_m <- CEO[graduate, ]
+```
+
+```{r}
+boxplot(CEO_nc$salary, CEO_c$salary, CEO_m$salary)
+```
+
+```{r}
+describe(CEO$profits)
+hist(CEO$profits, main = "Company Profits, 1990", 
+     xlab = "Profits in Millions")
+boxplot(CEO$profits)
+```
+
+```{r}
+describe(CEO$mktval)
+hist(CEO$mktval, main = "Company Market Value, 1990", 
+     xlab = "Market Value in Millions")
+boxplot(CEO$mktval)
+```
+
+```{r}
+describe(CEO$age)
+hist(CEO$age, main = "Age of CEOs in 1990")
+boxplot(CEO$age)
+```
+
+```{r}
+describe(CEO$comten)
+hist(CEO$comten, main = "CEO Company Tenure 1990")
+boxplot(CEO$comten)
+```
+
+```{r}
+describe(CEO$ceoten)
+hist(CEO$ceoten, main = "CEO Company (as CEO) Tenure 1990")
+boxplot(CEO$ceoten)
+```
+
+```{r}
+scatterplotMatrix( ~ salary + profits + age + mktval + comten + ceoten, data = CEO,
+                   main = "Scatterplot Matrix for Key CEO Variables")
+```
+## Secondary Variables
+
+Because the size of each company varies significantly, we have decided to "normalize" the performance measure of each CEO by dividing the profits by the market value. Typically a company would measure its percentage of profits with the gross revenue as the denominator, however, since we do not have revenue data available we will use the market value of the company. 
+```{r}
+CEO$prof_per <- CEO$profits / CEO$mktval
+describe(CEO$prof_per)
+boxplot(CEO$prof_per)
+```
+Now we will take a look at the relationship of CEO salary vs profits as a percentage of market value.
+```{r}
+plot(CEO$prof_per, CEO$salary,  
+     xlab = "Profits (% of Market Value)", ylab = "CEO Salary ($1000)", 
+     main = "CEO Salary vs. Company Performance")
+```
+
+
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

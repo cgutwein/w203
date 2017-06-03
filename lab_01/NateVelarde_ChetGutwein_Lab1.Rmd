@@ -23,7 +23,7 @@ opts_chunk$set(tidy.opts=list(width.cutoff=60),tidy=TRUE)
 Is CEO salary related to company performance?
 \end{center}
 
-This section is reserved for Intro...
+We will attempt to answer this question utilizing a dataset of CEO salaries from 1990. We will use exploratory data analysis techniques to look at each variable by itself and also in relation to other variables such as company performance.
 ```{r}
 getwd()
 ```
